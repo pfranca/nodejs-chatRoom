@@ -1,0 +1,23 @@
+{
+  "name": "iochat",
+  "version": "1.0.0",
+  "description": "Chat app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pfranca/nodejs-chatRoom.git"
+  },
+  "author": "Pedro França",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pfranca/nodejs-chatRoom/issues"
+  },
+  "homepage": "https://github.com/pfranca/nodejs-chatRoom#readme",
+  "dependencies": {
+    "socket.io": "*",
+    "express": "*"
+  }
+}
