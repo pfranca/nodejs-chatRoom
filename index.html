@@ -17,12 +17,30 @@
             body{
                 margin-top: 30px;
             }
+
+            #messageArea{
+                display:none;
+            }
         </style>
 
     </head>
     <body>
         <div class="container">
-            <div class="row">
+            <div id="loginFormArea" class="row">
+                <div class="col-md-12">
+                    <form id="loginForm" action="">
+                        <div class="form-group">
+                            <label>Enter Username</label>
+                            <input class="form-control" id="username" >
+                            <br>
+                            <input type="submit" class="btn btn-primary" value="Login">
+                        </div>
+                    </form>
+
+                </div>
+
+            </div>
+            <div id="messageArea" class="row">
                 <div class="col-md-4">
                     <div class="well">
                         <h3>Online Users</h3>
@@ -48,9 +66,14 @@
         <script>
             $(function(){
                 var socket = io.connect();
+                var $messageArea = $('#messageArea');
                 var $messageForm = $('#messageForm');
                 var $message = $('#message');
                 var $chat = $('#chat');
+                var $loginFormArea = $('#loginFormArea');
+                var $loginForm = $('#loginForm');
+                var $users = $('#users');
+                var $username = $('#username');
 
                 $messageForm.submit(function(event){
                     event.preventDefault();
@@ -59,8 +82,28 @@
                 });
 
                 socket.on('new message', function(data){
-                    $chat.append('<div class="well">'+data.msg+'</div>');
+                    $chat.append('<div class="well"><strong>'+data.user+': </strong>'+data.msg+'</div>');
                 })
+
+                 $loginForm.submit(function(event){
+                    event.preventDefault();
+                    socket.emit('new user', $username.val(), function(data){
+                        if(data){
+                            $loginFormArea.hide();
+                            $messageArea.show();
+                        }
+                    });
+                    $username.val('');
+                });
+
+                socket.on('get users', function(data){
+                    //console.log(data);
+                    var html = '';
+                    for(i = 0; i < data.length; i++){
+                        html += '<li class="list-group-item">'+data[i]+'</li>';
+                    }
+                    $users.html(html);
+                });
             });
         </script> 
     </body>
